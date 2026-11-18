@@ -1,25 +1,50 @@
-export const DILEMMAS = [
-  { thema: "Inkomen", vraag: "Wat vind jij eerlijk?", a: "Grote verschillen in wat mensen overhouden zijn oneerlijk", b: "Wie harder werkt of meer risico neemt, mag flink meer overhouden" },
-  { thema: "Werk", vraag: "Wat vind jij belangrijker?", a: "Vaste contracten en goede bescherming voor werkenden", b: "Ruimte om flexibel te werken en te ondernemen, met minder regels" },
-  { thema: "Energie en klimaat", vraag: "Wat weegt voor jou zwaarder?", a: "Betaalbare energie nu, ook als klimaatdoelen later worden gehaald", b: "Nu meer betalen om uitstoot sneller te verlagen" },
-  { thema: "Zorg", vraag: "Waar kies jij voor?", a: "De overheid regelt goede zorg voor iedereen, ook als dat meer belasting kost", b: "Mensen en families regelen meer zelf, met lagere belastingen" },
-  { thema: "Wonen", vraag: "Waar kies jij voor?", a: "Natuur en open ruimte beschermen, ook als er minder huizen bijkomen", b: "Snel veel huizen bouwen, ook in het groen" },
-  { thema: "Migratie", vraag: "Wat vind jij eerlijk?", a: "Ruimhartig zijn voor mensen die vluchten of hier willen werken", b: "Strenger kiezen wie er mag komen, zodat de samenleving het aankan" },
-  { thema: "Europa", vraag: "Wat vind jij belangrijker?", a: "Grote problemen samen in Europa oplossen, ook als Nederland zeggenschap inlevert", b: "Nederland beslist zelf over zijn eigen zaken, ook als samenwerken lastiger wordt" },
-  { thema: "Veiligheid", vraag: "Wat gaat voor?", a: "Politie en overheid mogen meer meekijken als dat misdaad voorkomt", b: "Privacy gaat voor, ook als opsporing moeilijker wordt" },
-  { thema: "Samenleving", vraag: "Waar sta jij?", a: "Tradities en gewoonten geven houvast; verander ze voorzichtig", b: "Een samenleving moet zich snel aanpassen aan nieuwe tijden" },
-  { thema: "Bestuur", vraag: "Wat vind jij eerlijk?", a: "Gemeenten en regio's beslissen meer zelf, ook als het per plek verschilt", b: "Dezelfde regels voor het hele land, zodat iedereen gelijk wordt behandeld" },
-  { thema: "Onderwijs", vraag: "Waar kies jij voor?", a: "Extra geld naar kinderen die het moeilijk hebben", b: "Iedereen dezelfde basis, en ruimte voor talent om uit te blinken" },
-  { thema: "Platteland", vraag: "Wat weegt voor jou zwaarder?", a: "Boeren houden de ruimte, ook als natuurdoelen later worden gehaald", b: "Natuur en water gaan voor, ook als boeren moeten veranderen" },
-  { thema: "Overheidsgeld", vraag: "Waar kies jij voor?", a: "De overheid investeert nu, ook als de staatsschuld oploopt", b: "De overheid is zuinig, zodat volgende generaties niet de rekening krijgen" },
-  { thema: "Straffen", vraag: "Wat werkt volgens jou beter?", a: "Zwaarder straffen houdt mensen tegen", b: "Meer inzetten op voorkomen en terugkeer in de samenleving" },
+// 15 stellingen in Stemwijzer-stijl. Bewust gemengd: "eens" hoort niet steeds bij dezelfde kant.
+export const STELLINGEN = [
+  { thema: "Wonen", tekst: "Er moeten sneller veel meer huizen gebouwd worden, ook als dat ten koste gaat van natuur." },
+  { thema: "Wonen", tekst: "Huurprijzen moeten strenger worden begrensd." },
+  { thema: "Klimaat", tekst: "Nederland moet sneller stoppen met fossiele brandstoffen, ook als energie daardoor duurder wordt." },
+  { thema: "Migratie", tekst: "Nederland moet minder asielzoekers toelaten." },
+  { thema: "Werk", tekst: "Arbeidsmigranten zijn nodig voor de Nederlandse economie." },
+  { thema: "Zorg", tekst: "Het eigen risico in de zorg moet fors omlaag of helemaal verdwijnen." },
+  { thema: "Belasting", tekst: "Mensen met een groot vermogen moeten meer belasting betalen." },
+  { thema: "Ondernemen", tekst: "Ondernemers moeten minder regels en lasten krijgen." },
+  { thema: "Defensie", tekst: "Nederland moet meer geld uitgeven aan defensie." },
+  { thema: "Europa", tekst: "Nederland moet meer beslissingen samen met de Europese Unie nemen." },
+  { thema: "Veiligheid", tekst: "De politie moet meer bevoegdheden krijgen, ook als dat ten koste gaat van privacy." },
+  { thema: "Landbouw", tekst: "De stikstofregels voor boeren moeten worden versoepeld." },
+  { thema: "Inkomen", tekst: "Het minimumloon moet verder omhoog." },
+  { thema: "Democratie", tekst: "Burgers moeten via een bindend referendum over wetten kunnen beslissen." },
+  { thema: "Onderwijs", tekst: "De overheid moet meer investeren in onderwijs, ook als belastingen daarvoor omhoog moeten." },
 ];
+
+export const SCHAAL = ["Helemaal niet mee eens", "Niet mee eens", "Neutraal", "Mee eens", "Helemaal mee eens"];
 
 export const FIX_THEMAS = [
   "Wonen", "Zorg", "Klimaat en energie", "Migratie", "Veiligheid",
   "Onderwijs", "Werk en economie", "Koopkracht", "Europa en de wereld", "Democratie en bestuur",
 ];
 
-export const OPSLAG_PROFIEL = "kb-profiel";
+// "Over jou": vragen over leefomgeving en situatie
+export const OVER_JOU = {
+  leeftijd: ["16–24", "25–34", "35–49", "50–64", "65+"],
+  omgeving: ["Grote stad", "Kleinere stad", "Dorp", "Platteland"],
+  provincie: ["Groningen", "Friesland", "Drenthe", "Overijssel", "Flevoland", "Gelderland", "Utrecht", "Noord-Holland", "Zuid-Holland", "Zeeland", "Noord-Brabant", "Limburg", "Buitenland"],
+  // Situaties zijn meerkeuze en worden omgezet naar petten
+  situatie: [
+    { label: "Student", pet: "student" },
+    { label: "Werknemer", pet: "werknemer" },
+    { label: "Ondernemer of zzp", pet: "ondernemer" },
+    { label: "Gepensioneerd", pet: "senior" },
+    { label: "Huurder", pet: "huurder" },
+    { label: "Ouder van kinderen", pet: "ouder" },
+  ],
+} as const;
 
-export type Profiel = { antwoorden: (number | null)[]; fix: string[]; klaar: boolean };
+export const OPSLAG_PROFIEL = "kb-profiel-v2";
+
+export type Profiel = {
+  overJou: { leeftijd: string | null; omgeving: string | null; provincie: string | null; situatie: string[] };
+  antwoorden: (number | null)[]; // 0..4 op SCHAAL, null = weet ik niet
+  fix: string[];
+  klaar: boolean;
+};

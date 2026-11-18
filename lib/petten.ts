@@ -6,6 +6,7 @@ export const PETTEN = [
   { id: "huurder", naam: "Huurder", kleur: "#2EC4B6", woorden: ["huur", "woning", "wonen", "woningbouw", "verhuur", "corporatie"] },
   { id: "ondernemer", naam: "Ondernemer", kleur: "#FF6B4A", woorden: ["ondernem", "bedrijf", "mkb", "zzp", "zelfstandige", "start-up", "startup", "scale-up", "vennootschap", "btw"] },
   { id: "werknemer", naam: "Werknemer", kleur: "#6F8BFF", woorden: ["werknemer", "werkgever", "arbeid", "loon", "pensioen", "cao", "minimumloon", "werkloos"] },
+  { id: "senior", naam: "Gepensioneerd", kleur: "#E9D8A6", woorden: ["aow", "pensioen", "ouderen", "gepensioneerd", "mantelzorg"] },
   { id: "ouder", naam: "Ouder", kleur: "#FFB3C7", woorden: ["kind", "ouder", "kinderopvang", "jeugd", "gezin", "kinderbijslag"] },
   { id: "zorg", naam: "Zorg", kleur: "#B8F2E6", woorden: ["zorg", "ziekenhuis", "huisarts", "zorgverzeker", "eigen risico", "ggz", "patiënt"] },
   { id: "klimaat", naam: "Klimaat & energie", kleur: "#C1F07A", woorden: ["klimaat", "energie", "stikstof", "co2", "uitstoot", "duurzaam", "gas", "wind"] },

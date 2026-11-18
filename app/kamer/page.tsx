@@ -30,7 +30,7 @@ export default async function Kamer() {
       </div>
       <KamerFilter>
         {besluiten.map((b) => (
-          <div key={b.id} data-soort={b.soort}>
+          <div key={b.id} data-soort={b.soort} data-titel={b.titel} data-uitslag={b.uitslag}>
             <BesluitItem b={b} toonPetten={false} />
           </div>
         ))}
