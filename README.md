@@ -24,6 +24,14 @@ npm run dev
 2. Importeer de GitHub-repository `Op-peil`.
 3. Laat alle instellingen staan en klik **Deploy**.
 
+## Supabase (accounts)
+
+1. Koppel Supabase via Vercel (Storage of Integrations → Supabase), regio Frankfurt.
+2. Plak de inhoud van `supabase/schema.sql` in Supabase → SQL Editor → Run.
+3. Zet in Supabase → Authentication → URL Configuration de Site URL op je Vercel-adres.
+
+Zonder Supabase werkt de app gewoon; profielen blijven dan alleen op het apparaat.
+
 ## Volgende stappen
 
 - Uitleg in gewone taal per besluit (Claude API), met redactionele controle.

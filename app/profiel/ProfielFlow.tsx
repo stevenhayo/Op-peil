@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { STELLINGEN, SCHAAL, FIX_THEMAS, FIX_NAAR_PET, OVER_JOU, OPSLAG_PROFIEL, type Profiel } from "@/lib/dilemmas";
 import { TYPES, bepaalType, samenvatting } from "@/lib/profieltype";
+import AccountBlok from "@/components/AccountBlok";
 import { OPSLAG_PETTEN } from "@/lib/petten";
 
 const KLEUREN = ["#FF6B4A", "#FFD23F", "#6F8BFF", "#2EC4B6"];
@@ -76,6 +77,7 @@ export default function ProfielFlow() {
             Je antwoorden blijven alleen op dit apparaat. Wij slaan ze nergens op.
           </p>
           <button className="knop knop-koraal" onClick={() => setStap(0)} style={{ marginTop: 12 }}>Start</button>
+          <AccountBlok onGeladen={(geladen) => { bewaar(geladen); if (geladen.klaar) setStap(STAP_KLAAR); }} />
         </div>
       </main>
     );
@@ -269,6 +271,7 @@ export default function ProfielFlow() {
           ))}
         </div>
       )}
+      <AccountBlok profiel={p} />
       <div style={{ display: "flex", gap: 10 }}>
         <button className="knop" style={{ flex: 1, background: "transparent", color: "#fff", border: "2px solid #fff" }}
           onClick={() => { bewaar(LEEG); setStap(-1); }}>Opnieuw</button>
