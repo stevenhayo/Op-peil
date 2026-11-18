@@ -24,7 +24,7 @@ button { font: inherit; cursor: pointer; }
 h1, h2, .display { font-family: "Space Grotesk", Inter, sans-serif; }
 
 .app { max-width: 520px; margin: 0 auto; min-height: 100dvh; display: flex; flex-direction: column; }
-.inhoud { flex: 1; padding: 28px 20px 110px; display: flex; flex-direction: column; gap: 18px; }
+.inhoud { flex: 1; padding: calc(28px + env(safe-area-inset-top)) 20px 110px; display: flex; flex-direction: column; gap: 18px; }
 
 .kop { font-size: 36px; line-height: 1.03; letter-spacing: -0.9px; margin: 0; }
 .subkop { font-size: 15px; color: var(--grijs); font-weight: 600; margin: 0; }

@@ -52,9 +52,18 @@ function normaliseer(b: Raw): Besluit | null {
   const indienerActor = Array.isArray(zaak.ZaakActor)
     ? zaak.ZaakActor.find((a: Raw) => (a.Relatie || "").toLowerCase() === "indiener")
     : null;
-  const stemmen: FractieStem[] = (Array.isArray(b.Stemming) ? b.Stemming : [])
-    .filter((s: Raw) => !s.Verwijderd && s.ActorFractie)
-    .map((s: Raw) => ({ fractie: s.ActorFractie, zetels: Number(s.FractieGrootte) || 0, soort: s.Soort }));
+  // Bij een gewone stemming is er één regel per fractie (met FractieGrootte).
+  // Bij een hoofdelijke stemming is er één regel per Kamerlid (met Persoon_Id): die tellen we op per fractie.
+  const perFractie = new Map<string, FractieStem>();
+  for (const s of (Array.isArray(b.Stemming) ? b.Stemming : []) as Raw[]) {
+    if (s.Verwijderd || !s.ActorFractie || !s.Soort) continue;
+    const telt = s.Persoon_Id ? 1 : Number(s.FractieGrootte) || 0;
+    const sleutel = `${s.ActorFractie}|${s.Soort}`;
+    const bestaand = perFractie.get(sleutel);
+    if (bestaand) bestaand.zetels += telt;
+    else perFractie.set(sleutel, { fractie: s.ActorFractie, zetels: telt, soort: s.Soort });
+  }
+  const stemmen: FractieStem[] = [...perFractie.values()];
   const voor = stemmen.filter((s) => s.soort === "Voor").reduce((n, s) => n + s.zetels, 0);
   const tegen = stemmen.filter((s) => s.soort === "Tegen").reduce((n, s) => n + s.zetels, 0);
   const tekst: string = b.BesluitTekst || "";

@@ -18,7 +18,7 @@ export default async function BesluitPagina({ params }: { params: Promise<{ id: 
 
   return (
     <main style={{ minHeight: "100dvh", paddingBottom: 110 }}>
-      <div style={{ background: kleur, padding: "18px 20px 28px", display: "flex", flexDirection: "column", gap: 12, position: "relative", overflow: "hidden" }}>
+      <div style={{ background: kleur, padding: "calc(18px + env(safe-area-inset-top)) 20px 28px", display: "flex", flexDirection: "column", gap: 12, position: "relative", overflow: "hidden" }}>
         <span className="bol" style={{ width: 160, height: 160, background: "rgba(255,255,255,.35)", right: -50, bottom: -70 }} />
         <Link href="/kamer" style={{ fontWeight: 800, fontSize: 14, minHeight: 44, display: "flex", alignItems: "center", gap: 6, position: "relative" }}>
           ← De Kamer
