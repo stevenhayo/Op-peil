@@ -1,7 +1,7 @@
 "use client";
 
-import { Children, isValidElement, useState, type ReactNode, type ReactElement } from "react";
-import { PETTEN, pettenVoor, type PetId } from "@/lib/petten";
+import { Children, isValidElement, useEffect, useState, type ReactNode, type ReactElement } from "react";
+import { PETTEN, pettenVoor, OPSLAG_PETTEN, type PetId } from "@/lib/petten";
 
 const SOORTEN = [
   { id: "alles", label: "Alles", soorten: null },
@@ -15,6 +15,14 @@ type Props = { "data-soort": string; "data-titel": string; "data-uitslag": strin
 export default function KamerFilter({ children }: { children: ReactNode }) {
   const [soort, setSoort] = useState("alles");
   const [petten, setPetten] = useState<PetId[]>([]);
+
+  // Standaard staan de petten uit je profiel aan; aanpassen kan, maar bij een volgend bezoek staan ze weer zo.
+  useEffect(() => {
+    try {
+      const s = JSON.parse(localStorage.getItem(OPSLAG_PETTEN) || "null");
+      if (Array.isArray(s)) setPetten(s.filter((x: string) => PETTEN.some((p) => p.id === x)));
+    } catch {}
+  }, []);
   const f = SOORTEN.find((x) => x.id === soort)!;
 
   const items = Children.toArray(children).filter((c): c is ReactElement<Props> => isValidElement(c));
@@ -29,7 +37,10 @@ export default function KamerFilter({ children }: { children: ReactNode }) {
   return (
     <>
       <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-        <span className="label" style={{ color: "var(--geel)" }}>ZET EEN PET OP</span>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <span className="label" style={{ color: "var(--geel)" }}>JOUW PETTEN</span>
+          {petten.length > 0 && <button onClick={() => setPetten([])} style={{ background: "none", border: 0, color: "#B7BCC8", fontSize: 13, fontWeight: 700, minHeight: 36 }}>Alles tonen</button>}
+        </div>
         <div className="chips">
           {PETTEN.map((p) => {
             const aan = petten.includes(p.id);

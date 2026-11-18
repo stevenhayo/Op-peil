@@ -40,6 +40,16 @@ export const OVER_JOU = {
   ],
 } as const;
 
+// Top-3-thema's die ook een pet opleveren
+export const FIX_NAAR_PET: Record<string, string> = {
+  "Wonen": "huurder",
+  "Zorg": "zorg",
+  "Klimaat en energie": "klimaat",
+  "Veiligheid": "veiligheid",
+  "Onderwijs": "student",
+  "Werk en economie": "werknemer",
+};
+
 export const OPSLAG_PROFIEL = "kb-profiel-v2";
 
 export type Profiel = {

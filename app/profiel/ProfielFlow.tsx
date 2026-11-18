@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { STELLINGEN, SCHAAL, FIX_THEMAS, OVER_JOU, OPSLAG_PROFIEL, type Profiel } from "@/lib/dilemmas";
+import { STELLINGEN, SCHAAL, FIX_THEMAS, FIX_NAAR_PET, OVER_JOU, OPSLAG_PROFIEL, type Profiel } from "@/lib/dilemmas";
+import { TYPES, bepaalType, samenvatting } from "@/lib/profieltype";
 import { OPSLAG_PETTEN } from "@/lib/petten";
 
 const KLEUREN = ["#FF6B4A", "#FFD23F", "#6F8BFF", "#2EC4B6"];
@@ -52,7 +53,9 @@ export default function ProfielFlow() {
     setP(nieuw);
     try {
       localStorage.setItem(OPSLAG_PROFIEL, JSON.stringify(nieuw));
-      const petten = OVER_JOU.situatie.filter((s) => nieuw.overJou.situatie.includes(s.label)).map((s) => s.pet);
+      const uitSituatie: string[] = OVER_JOU.situatie.filter((s) => nieuw.overJou.situatie.includes(s.label)).map((s) => s.pet);
+      const uitFix = nieuw.fix.map((f) => FIX_NAAR_PET[f]).filter(Boolean);
+      const petten = [...new Set([...uitSituatie, ...uitFix])];
       if (petten.length) localStorage.setItem(OPSLAG_PETTEN, JSON.stringify(petten));
     } catch {}
   };
@@ -222,11 +225,15 @@ export default function ProfielFlow() {
     return { x: 170 + Math.cos(hoek) * lengte, y: 170 + Math.sin(hoek) * lengte, kleur: a === null ? "#3A3E4A" : KLEUREN[i % 4] };
   });
   const o = p.overJou;
+  const type = TYPES[bepaalType(p.antwoorden)];
 
   return (
     <main className="inhoud" style={{ background: "var(--inkt)", color: "#fff", minHeight: "100dvh", gap: 16 }}>
-      <span className="label" style={{ color: "var(--geel)" }}>GEEN HOKJE. JOUW EIGEN MIX.</span>
-      <h1 className="kop" style={{ fontSize: 32 }}>Dit is jouw politieke profiel</h1>
+      <span className="label" style={{ color: "var(--geel)" }}>JOUW POLITIEKE PROFIEL</span>
+      <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+        <h1 className="kop" style={{ fontSize: 38, color: type.kleur }}>{type.naam}</h1>
+        <span style={{ fontSize: 17, fontWeight: 700 }}>{type.kort}</span>
+      </div>
       <div style={{ display: "flex", justifyContent: "center" }}>
         <svg width="300" height="300" viewBox="0 0 340 340" role="img" aria-label="Jouw vingerafdruk: één straal per stelling, langer betekent meer mee eens">
           {[150, 100, 50].map((r) => <circle key={r} cx="170" cy="170" r={r} fill="none" stroke="#2A2D36" />)}
@@ -234,6 +241,7 @@ export default function ProfielFlow() {
           <circle cx="170" cy="170" r="22" fill="#12141A" stroke="#fff" strokeWidth="3" />
         </svg>
       </div>
+      <p style={{ margin: 0, fontSize: 15, lineHeight: 1.55, color: "#DCDFE6" }}>{samenvatting(p.antwoorden, p.fix)}</p>
       <div className="chips">
         {[o.leeftijd, o.omgeving, o.provincie, ...o.situatie].filter(Boolean).map((x) => (
           <span key={x as string} className="pil" style={{ background: "var(--inkt-2)", color: "#fff", fontSize: 12, padding: "7px 11px" }}>{x}</span>
