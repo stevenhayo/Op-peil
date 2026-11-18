@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { recenteBesluiten, wetVanDeWeek } from "@/lib/tk";
+import Begroeting from "@/components/Begroeting";
 
 export const revalidate = 3600;
 
@@ -17,6 +18,8 @@ export default async function Home() {
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFD23F" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4" /><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6" /></svg>
         </Link>
       </header>
+
+      <Begroeting />
 
       <div>
         <p className="subkop">Afgelopen twee weken</p>

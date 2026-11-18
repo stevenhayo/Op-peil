@@ -10,7 +10,7 @@ import { OPSLAG_PETTEN } from "@/lib/petten";
 const KLEUREN = ["#FF6B4A", "#FFD23F", "#6F8BFF", "#2EC4B6"];
 const N = STELLINGEN.length;
 const LEEG: Profiel = {
-  overJou: { leeftijd: null, omgeving: null, provincie: null, situatie: [] },
+  overJou: { naam: "", leeftijd: null, omgeving: null, provincie: null, situatie: [] },
   antwoorden: Array(N).fill(null),
   fix: [],
   klaar: false,
@@ -89,13 +89,19 @@ export default function ProfielFlow() {
     const zet = (veld: "leeftijd" | "omgeving" | "provincie", v: string) => bewaar({ ...p, overJou: { ...o, [veld]: v } });
     const wisselSituatie = (s: string) =>
       bewaar({ ...p, overJou: { ...o, situatie: o.situatie.includes(s) ? o.situatie.filter((x) => x !== s) : [...o.situatie, s] } });
-    const klaar = o.leeftijd && o.omgeving;
+    const klaar = (o.naam ?? "").trim() && o.leeftijd && o.omgeving;
     return (
       <main className="inhoud" style={{ background: "var(--inkt)", color: "#fff", minHeight: "100dvh", gap: 20 }}>
         <div>
           <span className="label" style={{ color: "var(--mint)" }}>STAP 1 · OVER JOU</span>
           <h1 className="kop" style={{ fontSize: 32, marginTop: 8 }}>Waar sta jij in het leven?</h1>
         </div>
+        <section style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+          <label className="label" htmlFor="naam">HOE MOGEN WE JE NOEMEN?</label>
+          <input id="naam" type="text" autoComplete="given-name" maxLength={40} placeholder="Je voornaam" value={o.naam ?? ""}
+            onChange={(e) => bewaar({ ...p, overJou: { ...o, naam: e.target.value } })}
+            style={{ font: "inherit", fontWeight: 700, fontSize: 17, padding: "12px 14px", borderRadius: 14, border: "2px solid rgba(255,255,255,.55)", background: "var(--inkt-2)", color: "#fff", minHeight: 50 }} />
+        </section>
         <section style={{ display: "flex", flexDirection: "column", gap: 10 }}>
           <span className="label">LEEFTIJD</span>
           <Keuze opties={OVER_JOU.leeftijd} waarde={o.leeftijd} kies={(v) => zet("leeftijd", v)} />
@@ -128,7 +134,7 @@ export default function ProfielFlow() {
           <span style={{ fontSize: 12, color: "#B7BCC8" }}>Dit worden je petten: daarover hoor je het meest.</span>
         </section>
         <button className="knop knop-koraal" disabled={!klaar} style={{ opacity: klaar ? 1 : 0.4 }} onClick={() => setStap(1)}>
-          {klaar ? "Naar de stellingen" : "Kies je leeftijd en woonplek"}
+          {klaar ? "Naar de stellingen" : "Vul je naam, leeftijd en woonplek in"}
         </button>
       </main>
     );
@@ -231,7 +237,7 @@ export default function ProfielFlow() {
 
   return (
     <main className="inhoud" style={{ background: "var(--inkt)", color: "#fff", minHeight: "100dvh", gap: 16 }}>
-      <span className="label" style={{ color: "var(--geel)" }}>JOUW POLITIEKE PROFIEL</span>
+      <span className="label" style={{ color: "var(--geel)" }}>{o.naam ? `${o.naam.toUpperCase()}, DIT IS JOUW POLITIEKE PROFIEL` : "JOUW POLITIEKE PROFIEL"}</span>
       <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
         <h1 className="kop" style={{ fontSize: 38, color: type.kleur }}>{type.naam}</h1>
         <span style={{ fontSize: 17, fontWeight: 700 }}>{type.kort}</span>

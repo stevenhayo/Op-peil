@@ -53,7 +53,7 @@ export const FIX_NAAR_PET: Record<string, string> = {
 export const OPSLAG_PROFIEL = "kb-profiel-v2";
 
 export type Profiel = {
-  overJou: { leeftijd: string | null; omgeving: string | null; provincie: string | null; situatie: string[] };
+  overJou: { naam?: string; leeftijd: string | null; omgeving: string | null; provincie: string | null; situatie: string[] };
   antwoorden: (number | null)[]; // 0..4 op SCHAAL, null = weet ik niet
   fix: string[];
   klaar: boolean;
