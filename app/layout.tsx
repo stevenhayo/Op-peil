@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description: "Wat er in de Tweede Kamer gebeurt, voor jou vertaald. Zonder kant te kiezen.",
 };
 
-export const viewport: Viewport = { themeColor: "#12141A", width: "device-width", initialScale: 1 };
+export const viewport: Viewport = { themeColor: "#12141A", width: "device-width", initialScale: 1, viewportFit: "cover" };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
