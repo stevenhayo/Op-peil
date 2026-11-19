@@ -39,6 +39,13 @@ export default function ProfielFlow() {
   const [p, setP] = useState<Profiel>(LEEG);
   const [stap, setStap] = useState(-1);
   const [keuze, setKeuze] = useState<number | null>(null);
+  const [bewerk, setBewerk] = useState(false); // true: na een onderdeel terug naar het resultaat
+
+  const gaNaar = (s: number, antwoorden = p.antwoorden) => {
+    setStap(s);
+    setKeuze(s >= 1 && s <= N ? antwoorden[s - 1] ?? null : null);
+    if (typeof window !== "undefined") window.scrollTo(0, 0);
+  };
 
   useEffect(() => {
     try {
@@ -76,7 +83,7 @@ export default function ProfielFlow() {
           <p style={{ fontSize: 13, lineHeight: 1.5, color: "#DCE3FF", margin: 0 }}>
             Je antwoorden blijven alleen op dit apparaat. Wij slaan ze nergens op.
           </p>
-          <button className="knop knop-koraal" onClick={() => setStap(0)} style={{ marginTop: 12 }}>Start</button>
+          <button className="knop knop-koraal" onClick={() => { setBewerk(false); gaNaar(0); }} style={{ marginTop: 12 }}>Start</button>
           <AccountBlok onGeladen={(geladen) => { bewaar(geladen); if (geladen.klaar) setStap(STAP_KLAAR); }} />
         </div>
       </main>
@@ -133,8 +140,8 @@ export default function ProfielFlow() {
           </div>
           <span style={{ fontSize: 12, color: "#B7BCC8" }}>Dit worden je petten: daarover hoor je het meest.</span>
         </section>
-        <button className="knop knop-koraal" disabled={!klaar} style={{ opacity: klaar ? 1 : 0.4 }} onClick={() => setStap(1)}>
-          {klaar ? "Naar de stellingen" : "Vul je naam, leeftijd en woonplek in"}
+        <button className="knop knop-koraal" disabled={!klaar} style={{ opacity: klaar ? 1 : 0.4 }} onClick={() => gaNaar(bewerk ? STAP_KLAAR : 1)}>
+          {!klaar ? "Vul je naam, leeftijd en woonplek in" : bewerk ? "Opslaan" : "Naar de stellingen"}
         </button>
       </main>
     );
@@ -148,8 +155,7 @@ export default function ProfielFlow() {
       const antwoorden = [...p.antwoorden];
       antwoorden[i] = waarde;
       bewaar({ ...p, antwoorden });
-      setKeuze(null);
-      setStap(stap + 1);
+      gaNaar(bewerk && stap === N ? STAP_KLAAR : stap + 1, antwoorden);
     };
     const kleurVan = (v: number) => (v < 2 ? "var(--koraal)" : v > 2 ? "var(--mint)" : "#fff");
     return (
@@ -177,6 +183,9 @@ export default function ProfielFlow() {
             );
           })}
         </div>
+        {i > 0 && (
+          <button onClick={() => gaNaar(stap - 1)} style={{ alignSelf: "flex-start", background: "none", border: 0, color: "#DCE3FF", fontWeight: 700, minHeight: 40, padding: 0 }}>← Vorige stelling</button>
+        )}
         <div style={{ display: "flex", gap: 10, marginTop: 6 }}>
           <button className="knop" onClick={() => volgende(null)} style={{ background: "transparent", color: "#fff", border: "2px solid rgba(255,255,255,.6)" }}>Weet ik niet</button>
           <button className={`knop ${keuze !== null ? "knop-koraal" : "knop-uit"}`} style={{ flex: 1 }} onClick={() => keuze !== null && volgende(keuze)}>
@@ -278,11 +287,21 @@ export default function ProfielFlow() {
         </div>
       )}
       <AccountBlok profiel={p} />
-      <div style={{ display: "flex", gap: 10 }}>
-        <button className="knop" style={{ flex: 1, background: "transparent", color: "#fff", border: "2px solid #fff" }}
-          onClick={() => { bewaar(LEEG); setStap(-1); }}>Opnieuw</button>
-        <Link href="/kamer" className="knop knop-koraal" style={{ flex: 1 }}>Naar de Kamer</Link>
-      </div>
+      <section className="kaart" style={{ background: "var(--inkt-2)", gap: 8 }}>
+        <span className="label" style={{ color: "var(--geel)" }}>PROFIEL BEWERKEN</span>
+        {[
+          { label: "Over jou (naam, leeftijd, woonplek, petten)", stap: 0 },
+          { label: "De 15 stellingen", stap: 1 },
+          { label: "Jouw top 3 om te fixen", stap: STAP_FIX },
+        ].map((x) => (
+          <button key={x.label} onClick={() => { setBewerk(true); gaNaar(x.stap); }}
+            style={{ display: "flex", justifyContent: "space-between", alignItems: "center", minHeight: 52, padding: "0 14px", borderRadius: 14, border: "2px solid #3A3E4A", background: "transparent", color: "#fff", fontWeight: 700, textAlign: "left" }}>
+            {x.label}<span aria-hidden="true">→</span>
+          </button>
+        ))}
+        <button onClick={() => { bewaar(LEEG); setBewerk(false); gaNaar(-1); }} style={{ background: "none", border: 0, color: "#FF9A85", fontWeight: 700, minHeight: 40 }}>Helemaal opnieuw beginnen</button>
+      </section>
+      <Link href="/kamer" className="knop knop-koraal">Naar de Kamer</Link>
       <p className="voetnoot" style={{ color: "#9095A3" }}>Testversie. Later zie je hier ook waar jij anders denkt dan mensen die op je lijken.</p>
     </main>
   );
